@@ -1,55 +1,49 @@
 import javax.swing.JOptionPane;
+import java.net.InetAddress;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 /**
- * Laboratorio 6 - Ejercicio 4
- * Validador de Contraseña con do-while
+ * Laboratorio 6 - Ejercicio 2
+ * Calculadora de Descuentos con switch
  *
- * Autor: [Tu nombre aquí]
- * Fecha: [Fecha]
+ * Autor: [joel ayarza]
+ * Fecha: [11-16-2026]
  */
 public class Ejercicio4 {
-
-    public static void main(String[] args) {
-
-        // ============================================================
-        // Variables de control
-        // ============================================================
+    public static void main(String[] args) throws Exception {
         int intentos = 0;
         boolean valida = false;
-        String contrasena = "";
 
-        // ============================================================
-        // TODO 1: Implementar el ciclo DO-WHILE que:
-        //   1. Pide una contraseña con JOptionPane.showInputDialog
-        //   2. Incrementa el contador de intentos
-        //   3. Verifica las 3 reglas en orden:
-        //      a. Longitud >= 8  → si falla: "La contrasena debe tener al menos 8 caracteres"
-        //      b. Contiene dígito (usa Character.isDigit en un for)
-        //                        → si falla: "La contrasena debe tener al menos un digito"
-        //      c. Contiene mayúscula (usa Character.isUpperCase en un for)
-        //                        → si falla: "La contrasena debe tener al menos una mayuscula"
-        //   4. Si cumple las 3: muestra JOptionPane con "Contrasena aceptada"
-        //      y pone valida = true
-        //   5. Si falla alguna: muestra el mensaje de error con JOptionPane
-        //      y continúa el ciclo
-        // El ciclo repite mientras !valida
-        // ============================================================
+        do {
+            String pass = JOptionPane.showInputDialog("Ingrese una contraseña:");
+            if (pass == null) { // el usuario cerro o cancelo el cuadro
+                return;
+            }
+            intentos++;
 
-        // ============================================================
-        // TODO 2: Obtener nombre de PC y fecha/hora
-        // ============================================================
-        String nombrePC = "DESCONOCIDO";
-        String fechaHora = "";
+            boolean tieneDigito = false;
+            boolean tieneMayuscula = false;
+            for (int i = 0; i < pass.length(); i++) {
+                char c = pass.charAt(i);
+                if (c >= '0' && c <= '9') tieneDigito = true;
+                if (c >= 'A' && c <= 'Z') tieneMayuscula = true;
+            }
 
-        // ============================================================
-        // TODO 3: Mostrar resultado final con JOptionPane.showMessageDialog
-        // Formato EXACTO:
-        //   Contrasena aceptada
-        //   Intentos realizados: X
-        //   Computadora: <nombre-PC> | Fecha: YYYY-MM-DD HH:MM:SS
-        // ============================================================
+            if (pass.length() < 8) {
+                JOptionPane.showMessageDialog(null, "Error: minimo 8 caracteres");
+            } else if (!tieneDigito) {
+                JOptionPane.showMessageDialog(null, "Error: debe tener al menos un digito");
+            } else if (!tieneMayuscula) {
+                JOptionPane.showMessageDialog(null, "Error: debe tener al menos una mayuscula");
+            } else {
+                valida = true;
+            }
+        } while (!valida);
 
+        String pc = InetAddress.getLocalHost().getHostName();
+        String fecha = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        JOptionPane.showMessageDialog(null, "Contrasena aceptada\nIntentos realizados: " + intentos
+                + "\nComputadora: " + pc + " | Fecha: " + fecha);
     }
 }

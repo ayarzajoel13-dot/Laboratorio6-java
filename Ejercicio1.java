@@ -1,59 +1,44 @@
 import javax.swing.JOptionPane;
+import java.net.InetAddress;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
- * Laboratorio 6 - Ejercicio 1
- * Clasificador de Temperatura con if/else if/else
+ * Laboratorio 6 - Ejercicio 2
+ * Calculadora de Descuentos con switch
  *
- * Autor: [Tu nombre aquí]
- * Fecha: [Fecha]
+ * Autor: [joel ayarza]
+ * Fecha: [11-16-2026]
  */
+
 public class Ejercicio1 {
+    public static void main(String[] args) throws Exception {
+        int semilla = args.length > 0 ? Integer.parseInt(args[0]) : 123; // TUS 3 DIGITOS
 
-    public static void main(String[] args) {
+        double base = (semilla % 60) - 10;
+        double temp = base + (semilla % 7) * 0.5;
 
-        // ============================================================
-        // TODO 1: Leer la semilla del usuario (últimos 3 dígitos de cédula)
-        // Usa JOptionPane.showInputDialog para pedirla.
-        // Convierte a entero con Integer.parseInt
-        // ============================================================
-        int semilla = 0; // reemplaza este 0
+        String clasif;
+        if (temp < 0) {
+            clasif = "Congelante";
+        } else if (temp < 10) {
+            clasif = "Frio";
+        } else if (temp < 20) {
+            clasif = "Fresco";
+        } else if (temp < 30) {
+            clasif = "Templado";
+        } else if (temp < 40) {
+            clasif = "Caluroso";
+        } else {
+            clasif = "Peligroso";
+        }
 
-        // ============================================================
-        // TODO 2: Calcular la temperatura con la fórmula de tu semilla:
-        //   base = (semilla % 60) - 10
-        //   temp = base + (semilla % 7) * 0.5
-        // ============================================================
-        double temp = 0.0; // reemplaza este 0.0
+        String pc = InetAddress.getLocalHost().getHostName();
+        String fecha = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-        // ============================================================
-        // TODO 3: Clasificar la temperatura con if / else if / else
-        //   < 0        → "Congelante"
-        //   0 – 9.99   → "Frio"
-        //   10 – 19.99 → "Fresco"
-        //   20 – 29.99 → "Templado"
-        //   30 – 39.99 → "Caluroso"
-        //   >= 40      → "Peligroso"
-        // ============================================================
-        String clasificacion = ""; // reemplaza este ""
-
-        // ============================================================
-        // TODO 4: Obtener nombre de computadora y fecha/hora actual
-        //   Nombre PC : InetAddress.getLocalHost().getHostName()
-        //               (importa java.net.InetAddress, maneja la excepción)
-        //   Fecha/hora: LocalDateTime.now() formateado como "yyyy-MM-dd HH:mm:ss"
-        // ============================================================
-        String nombrePC = "DESCONOCIDO";
-        String fechaHora = "";
-
-        // ============================================================
-        // TODO 5: Mostrar resultado con JOptionPane.showMessageDialog
-        // Formato EXACTO:
-        //   Temperatura: XX.X °C
-        //   Clasificacion: Caluroso
-        //   Computadora: <nombre-PC> | Fecha: YYYY-MM-DD HH:MM:SS
-        // ============================================================
-
+        String msg = String.format(Locale.US, "Temperatura: %.1f °C\nClasificacion: %s\nComputadora: %s | Fecha: %s",
+                temp, clasif, pc, fecha);
+        JOptionPane.showMessageDialog(null, msg);
     }
 }
